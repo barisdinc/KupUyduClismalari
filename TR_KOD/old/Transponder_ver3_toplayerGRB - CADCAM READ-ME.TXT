@@ -1,0 +1,86 @@
+LABCENTER PROTEUS TOOL INFORMATION FILE
+=======================================
+
+In case of difficulty, please e-mail support@labcenter.co.uk
+
+Tool set up for Proteus layout 'Transponder_ver3_4layer.LYT'.
+CADCAM generated at 5:30:25 PM on Tuesday, January 01, 2013.
+
+File List
+---------
+Top Copper              : Transponder_ver3_toplayerGRB - CADCAM Top Copper.TXT
+
+Photoplotter Setup
+------------------
+Format: RS274X, ASCII, 2.4, imperial, absolute, eob=*, LZO
+Notes:  D=Diameter, S=Side, W=Width, H=Height
+
+D10	CIRCLE	D=0.38mm                                    DRAW
+D11	CIRCLE	D=0.51mm                                    DRAW
+D12	CIRCLE	D=0.76mm                                    DRAW
+D13	CIRCLE	D=0.3mm                                     DRAW
+D14	CIRCLE	D=0.43mm                                    DRAW
+D15	CIRCLE	D=0.64mm                                    DRAW
+D16	CIRCLE	D=0.25mm                                    DRAW
+D17	CIRCLE	D=1.52mm                                    DRAW
+D18	CIRCLE	D=1.02mm                                    DRAW
+D19	CIRCLE	D=1.27mm                                    DRAW
+D70	CIRCLE	D=0.2mm                                     DRAW
+D71	CIRCLE	D=0.76mm                                    FLASH
+D20	CIRCLE	D=0.127mm                                   DRAW
+D21	SMT	W=2.03mm              H=3.81mm              FLASH
+D22	SMT	W=0.89mm              H=1.02mm              FLASH
+D23	SMT	W=1.27mm              H=1.02mm              FLASH
+D24	SMT	W=1.02mm              H=1.27mm              FLASH
+D25	SMT	W=3.05mm              H=1.65mm              FLASH
+D26	SMT	W=1.52mm              H=1.02mm              FLASH
+D27	SMT	W=1.78mm              H=1.4mm               FLASH
+D28	SMT	W=1.65mm              H=3.05mm              FLASH
+D29	SMT	W=2.08mm              H=1.8mm               FLASH
+D72	SMT	W=1.27mm              H=0.64mm              FLASH
+D73	SMT	W=1.02mm              H=0.89mm              FLASH
+D30	SMT	W=0.3mm               H=1.78mm              FLASH
+D31	SMT	W=2.03mm              H=0.64mm              FLASH
+D32	SMT	W=1.65mm              H=1.52mm              FLASH
+D33	SMT	W=1.52mm              H=1.65mm              FLASH
+D34	SMT	W=2.54mm              H=1.02mm              FLASH
+D35	SMT	W=3.81mm              H=2.03mm              FLASH
+D36	SMT	W=0.76mm              H=1.27mm              FLASH
+D37	SMT	W=0.68mm              H=0.25mm              FLASH
+D38	SMT	W=1.68mm              H=2.38mm              FLASH
+D39	SMT	W=0.51mm              H=0.76mm              FLASH
+D40	SMT	W=0.87mm              H=1.9mm               FLASH
+D41	SMT	W=1.9mm               H=0.87mm              FLASH
+D42	SMT	W=1.45mm              H=0.81mm              FLASH
+D43	SMT	W=0.68mm              H=0.3mm               FLASH
+D44	SMT	W=0.3mm               H=0.68mm              FLASH
+D45	SMT	W=2.45mm              H=2.45mm              FLASH
+D46	SMT	W=1.9mm               H=0.6mm               FLASH
+D47	SMT	W=1.65mm              H=2.54mm              FLASH
+D48	SMT	W=0.6mm               H=1.7mm               FLASH
+D49	SMT	W=0.6mm               H=0.8mm               FLASH
+D50	SMT	W=0.76mm              H=0.36mm              FLASH
+D51	CIRCLE	D=1mm                                       FLASH
+D52	SMT	W=1.02mm              H=3.05mm              FLASH
+D53	SMT	W=10.67mm             H=8.38mm              FLASH
+D54	SMT	W=1.02mm              H=1.52mm              FLASH
+D55	SMT	W=0.64mm              H=2.03mm              FLASH
+D56	SMT	W=3.56mm              H=2.54mm              FLASH
+D57	SMT	W=0.64mm              H=1.27mm              FLASH
+D58	SMT	W=0.64mm              H=1.02mm              FLASH
+D59	SMT	W=0.76mm              H=0.51mm              FLASH
+D60	CIRCLE	D=5.08mm                                    FLASH
+D61	CIRCLE	D=1.57mm                                    FLASH
+D62	SQUARE	S=1.78mm                                    FLASH
+D63	CIRCLE	D=1.65mm                                    FLASH
+D64	CIRCLE	D=1.4mm                                     FLASH
+D65	CIRCLE	D=0.03mm                                    DRAW
+
+NC Drill Setup
+--------------
+Format: ASCII, 2.4, imperial, absolute, eob=<CR><LF>, no zero suppression.
+Notes:  Tool sizes are diameters. Layer sets are in brackets - 0=TOP, 15=BOTTOM, 1-14=INNER.
+
+
+
+[END OF FILE]

@@ -1,0 +1,492 @@
+MPASM  5.06                           570.ASM   5-19-2011  15:45:21         PAGE  1
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+                      00001 ;______________________________________________________________________________
+                      00002 ;
+                      00003 ; PROGRAM     : Si570.asm
+                      00004 ;
+                      00005 ; DATE        : 14/08/08
+                      00006 ; LAST UPDATE : 14/08/08
+                      00007 ;
+                      00008 ; HARDWARE    : 12F509 @ 4 MHz
+                      00009 ; ASSEMBLER   : MPASM v5.01  / case sensitive
+                      00010 ;
+                      00011 ; NEEDS       : P12F509.INC
+                      00012 ;
+                      00013 ; AUTHOR      : Cesco HB9TLK
+                      00014 ;             : Francis F6HSI (tnx for the hints)
+                      00015 ;______________________________________________________________________________
+                      00016 ;
+                      00017 ;                                 DIRECTIVES
+                      00018 ;______________________________________________________________________________
+                      00019 
+                      00020   list       p = 12F509, n = 0 , r = dec , x = OFF, st = ON
+                      00021 
+Error[105]  : Cannot open file (Include File "P12F509.INC" not found)
+                      00022   include    P12F509.INC
+                      00023 
+Error[113]  : Symbol not previously defined (_MCLRE_OFF)
+Error[113]  : Symbol not previously defined (_CP_OFF)
+Error[113]  : Symbol not previously defined (_WDT_OFF)
+Error[113]  : Symbol not previously defined (_IntRC_OSC)
+0FFF   0000           00024   __CONFIG  _MCLRE_OFF & _CP_OFF & _WDT_OFF & _IntRC_OSC
+                      00025 ;______________________________________________________________________________
+                      00026 ;
+                      00027 ;                                 CONSTANTS
+                      00028 ;______________________________________________________________________________
+                      00029 
+  00000010            00030 START_OF_RAM = 0x10
+                      00031 ;______________________________________________________________________________
+                      00032 ;
+                      00033 ;                                 VARIABLES
+                      00034 ;______________________________________________________________________________
+                      00035 
+                      00036   cblock START_OF_RAM
+                      00037 
+  00000010            00038 I2C_Buffer
+  00000011            00039 I2C_Bit_Count
+  00000012            00040 Switch_BackUp
+  00000013            00041 Qrg_Pointer
+                      00042 
+                      00043   endc
+                      00044 ;______________________________________________________________________________
+                      00045 ;
+                      00046 ;                                   PORTS
+                      00047 ;______________________________________________________________________________
+                      00048 
+                      00049 #define SCL GPIO,5 ; IIC Clock (pin 2)
+                      00050 #define SDA GPIO,4 ; IIC Data  (pin 3)
+                      00051 ;______________________________________________________________________________
+                      00052 ;
+                      00053 ;                                 INIT RESET
+                      00054 ;______________________________________________________________________________
+                      00055 
+0000                  00056   ORG  0
+Error[113]  : Symbol not previously defined (OSCCAL)
+0000   0020           00057   movwf OSCCAL 
+0001   0A7F           00058   goto Main
+                      00059 ;______________________________________________________________________________
+                      00060 ;
+                      00061 ;                                   TABLES
+                      00062 ;______________________________________________________________________________
+                      00063 
+0002                  00064 GetFreq
+                      00065 
+0002   0213           00066   movfw Qrg_Pointer
+0003   02B3           00067   incf  Qrg_Pointer,f   ; Update pointer for next time
+Error[113]  : Symbol not previously defined (PCL)
+0004   01E0           00068   addwf PCL,F           ; Jump in the table
+                      00069 
+0005   08A8 0842 08AA 00070 Freq1 dt 0xa8,0x42,0xaa,0xdf,0xb5,0xd0
+       08DF 08B5 08D0 
+                      00071 
+000B   08E6 08C2 08AA 00072 Freq2 dt 0xe6,0xc2,0xaa,0x29,0xa4,0x51
+       0829 08A4 0851 
+                      00073 
+0011   0829 08C2 08A9 00074 Freq3 dt 0x29,0xc2,0xa9,0x86,0x35,0xdf
+       0886 0835 08DF 
+                      00075 
+0017   0829 08C2 08A8 00076 Freq4 dt 0x29,0xc2,0xa8,0x67,0x7d,0x18
+       0867 087D 0818 
+                      00077 
+001D   0829 08C2 08AD 00078 Freq5 dt 0x29,0xc2,0xad,0x71,0xbc,0x99
+       0871 08BC 0899 
+                      00079 
+0023   08F1 08C2 08AD 00080 Freq6 dt 0xf1,0xc2,0xad,0xcc,0x0d,0xd8
+       08CC 080D 08D8 
+                      00081 
+0029   087B 08C2 08AF 00082 Freq7 dt 0x7b,0xc2,0xaf,0x1a,0x15,0xc0
+       081A 0815 08C0 
+                      00083 
+002F   085F 08C2 08B0 00084 Freq8 dt 0x5f,0xc2,0xb0,0x8f,0xf8,0x5e
+       088F 08F8 085E 
+                      00085 
+                      00086 ;______________________________________________________________________________
+                      00087 ;
+                      00088 ;                                   MACROS
+                      00089 ;______________________________________________________________________________
+                      00090 
+                      00091 ;------------------------------------------------------------------------------
+                      00092 Init macro
+                      00093 ;------------------------------------------------------------------------------
+                      00094 ;         76543210
+                      00095   movlw B'11000000'
+                      00096 ;         |||||^^^----- Prescaler Rate = 1/2
+                      00097 ;         ||||^-------- Prescaler assigned to Timer0
+                      00098 ;         |||^--------- Increment on low-to-high transition on the T0CKI pin
+                      00099 ;         ||^---------- Transition on internal instruction cycle clock, FOSC/4
+                      00100 ;         |^----------- Disable Weak Pull-ups on GP0, GP1 and GP3
+                      00101 ;         ^------------ DisEnable Wake-up on Pin Change on GP0, GP1 and GP3
+                      00102   option
+                      00103 
+                      00104 ;         76543210
+                      00105   movlw B'00010000'
+                      00106 ;           |^--------- SDA line as input
+                      00107 ;           ^---------- SCL line as output
+                      00108   TRIS  GPIO            ; Set SDA as input, confirm SCL as output
+                      00109 
+                      00110 ;         76543210
+                      00111   movlw B'00110000'
+                      00112   movwf GPIO
+                      00113 
+                      00114   movlw 0xff
+                      00115   movwf Switch_BackUp  ;inital value to provoke default run
+                      00116 
+                      00117   endm
+                      00118 ;------------------------------------------------------------------------------
+                      00119 #define SCL_High bsf SCL
+                      00120 #define SCL_Low  bcf SCL
+                      00121 ;------------------------------------------------------------------------------
+                      00122 SDA_High_Z  macro
+                      00123 ;------------------------------------------------------------------------------
+                      00124 ;           543210
+                      00125 ;           ||
+                      00126   movlw B'00011111'
+                      00127   TRIS  GPIO            ; Set SDA as input, confirm SCL as output
+                      00128 
+                      00129   endm
+                      00130 ;------------------------------------------------------------------------------
+                      00131 SDA_Low  macro
+                      00132 ;------------------------------------------------------------------------------
+                      00133   bcf   SDA             ; Clear latch
+                      00134 ;           543210
+                      00135 ;           ||
+                      00136   movlw B'00001111'
+                      00137   TRIS  GPIO            ; Set SDA as output, confirm SCL as output
+                      00138 
+                      00139   endm
+                      00140 ;______________________________________________________________________________
+                      00141 ;
+                      00142 ;                                SUBROUTINES
+                      00143 ;______________________________________________________________________________
+                      00144 
+                      00145 ;------------------------------------------------------------------------------
+0035                  00146 Freeze             ; Freeze the DCO (bit 4 of Register 137)
+                      00147 ;------------------------------------------------------------------------------
+0035   093E           00148   call I2C_Start
+                      00149 
+                      00150   ; Send slave address + write bit
+                      00151   ;-------------------------------
+0036   0CAA           00152   movlw 0xAA
+0037   0950           00153   call  I2C_Tx
+                      00154 
+                      00155   ; Send register address
+                      00156   ;----------------------
+0038   0C89           00157   movlw 137
+0039   0950           00158   call  I2C_Tx
+                      00159 
+                      00160   ; Set bit 4
+                      00161   ;----------
+                      00162   ;       76543210
+003A   0C10           00163   movlw b'00010000'
+003B   0950           00164   call  I2C_Tx
+                      00165 
+003C   0949           00166   call  I2C_Stop
+                      00167 
+003D   0800           00168   retlw 0
+                      00169 ;------------------------------------------------------------------------------
+003E                  00170 I2C_Start          ; Wenn SDA und SCL beide High, dann SDA auf Low ziehen
+                      00171 ;------------------------------------------------------------------------------
+Error[113]  : Symbol not previously defined (GPIO)
+003E   05A0           00172   SCL_High
+                      00173   SDA_High_Z
+Error[113]  : Symbol not previously defined (GPIO)
+Error[126]  : Argument out of range (0 not between 5 and 9)
+0041   0000           00174   nop
+0042   0000           00175   nop
+                      00176   SDA_Low
+Error[113]  : Symbol not previously defined (GPIO)
+Error[113]  : Symbol not previously defined (GPIO)
+Error[126]  : Argument out of range (0 not between 5 and 9)
+0046   0000           00177   nop
+Error[113]  : Symbol not previously defined (GPIO)
+0047   04A0           00178   SCL_Low
+                      00179 
+0048   0800           00180   retlw 0
+                      00181 ;------------------------------------------------------------------------------
+0049                  00182 I2C_Stop           ; SCL ist Low und SDA ist Low
+                      00183 ;------------------------------------------------------------------------------
+0049   0000           00184   nop
+004A   0000           00185   nop
+Error[113]  : Symbol not previously defined (GPIO)
+004B   05A0           00186   SCL_High
+004C   0000           00187   nop
+                      00188   SDA_High_Z
+Error[113]  : Symbol not previously defined (GPIO)
+Error[126]  : Argument out of range (0 not between 5 and 9)
+                      00189 
+004F   0800           00190   retlw 0
+                      00191 ;------------------------------------------------------------------------------
+0050                  00192 I2C_Tx             ; Send a byte (in w) to the slave
+                      00193 ;------------------------------------------------------------------------------
+                      00194   ; Save data to send
+                      00195   ;------------------
+0050   0030           00196   movwf I2C_Buffer
+                      00197 
+                      00198   ; I2C_Bit_Count = 8
+                      00199   ;------------------
+0051   0C08           00200   movlw 8
+0052   0031           00201   movwf I2C_Bit_Count
+                      00202 
+0053                  00203 Tx_Repeat
+                      00204 
+                      00205   ; SDA line = bit to send
+                      00206   ;-----------------------
+                      00207   SDA_Low               ; Assume 0
+Error[113]  : Symbol not previously defined (GPIO)
+Error[113]  : Symbol not previously defined (GPIO)
+Error[126]  : Argument out of range (0 not between 5 and 9)
+0056   0370           00208   rlf   I2C_Buffer,f
+Error[113]  : Symbol not previously defined (STATUS)
+Error[113]  : Symbol not previously defined (C)
+0057   0600           00209   btfsc STATUS,C
+                      00210   SDA_High_Z            ; Sorry it was 1
+Error[113]  : Symbol not previously defined (GPIO)
+Error[126]  : Argument out of range (0 not between 5 and 9)
+                      00211 
+                      00212   ; SCL pulse
+                      00213   ;----------
+005A   0000           00214   nop
+Error[113]  : Symbol not previously defined (GPIO)
+005B   05A0           00215   SCL_High
+005C   0000           00216   nop
+005D   0000           00217   nop
+005E   0000           00218   nop
+Error[113]  : Symbol not previously defined (GPIO)
+005F   04A0           00219   SCL_Low
+                      00220 
+0060                  00221 Tx_Until ; All bits have been processed
+                      00222 
+0060   02F1           00223   decfsz I2C_Bit_Count,f
+0061   0A53           00224   goto   Tx_Repeat
+                      00225 
+                      00226   ; Get ACK from slave   <- to be done!
+                      00227   ;-------------------
+                      00228   SDA_High_Z
+Error[113]  : Symbol not previously defined (GPIO)
+Error[126]  : Argument out of range (0 not between 5 and 9)
+Error[113]  : Symbol not previously defined (GPIO)
+0064   05A0           00229   SCL_High
+                      00230 
+0065   0000           00231   nop                   ; Replace by a Read_Bit
+0066   0000           00232   nop
+0067   0000           00233   nop
+                      00234 
+Error[113]  : Symbol not previously defined (GPIO)
+0068   04A0           00235   SCL_Low
+                      00236   SDA_Low
+Error[113]  : Symbol not previously defined (GPIO)
+Error[113]  : Symbol not previously defined (GPIO)
+Error[126]  : Argument out of range (0 not between 5 and 9)
+                      00237 
+006C   0800           00238   retlw 0
+                      00239 ;------------------------------------------------------------------------------
+006D                  00240 Newf               ; Assert the NewFreq bit (bit 6 of Register 135)
+                      00241 ;------------------------------------------------------------------------------
+006D   093E           00242   call I2C_Start
+                      00243 
+                      00244   ; Send slave address + write bit
+                      00245   ;-------------------------------
+006E   0CAA           00246   movlw 0xAA
+006F   0950           00247   call  I2C_Tx
+                      00248 
+                      00249   ; Send register address
+                      00250   ;----------------------
+0070   0C87           00251   movlw 135
+0071   0950           00252   call  I2C_Tx
+                      00253 
+                      00254   ; Set bit 6
+                      00255   ;----------
+                      00256   ;       76543210
+0072   0C40           00257   movlw b'01000000'
+0073   0950           00258   call  I2C_Tx
+                      00259 
+0074   0949           00260   call  I2C_Stop
+                      00261 
+0075   0800           00262   retlw 0
+                      00263 ;------------------------------------------------------------------------------
+0076                  00264 Unfreeze           ; Freeze the DCO (bit 4 of Register 137)
+                      00265 ;------------------------------------------------------------------------------
+0076   093E           00266   call I2C_Start
+                      00267 
+                      00268   ; Send slave address + write bit
+                      00269   ;-------------------------------
+0077   0CAA           00270   movlw 0xAA
+0078   0950           00271   call  I2C_Tx
+                      00272 
+                      00273   ; Send register address
+                      00274   ;----------------------
+0079   0C89           00275   movlw 137
+007A   0950           00276   call  I2C_Tx
+                      00277 
+                      00278   ; Clear bit 4
+                      00279   ;------------
+                      00280   ;       76543210
+007B   0C00           00281   movlw b'00000000'
+007C   0950           00282   call  I2C_Tx
+                      00283 
+007D   0949           00284   call  I2C_Stop
+                      00285 
+007E   0800           00286   retlw 0
+                      00287 ;______________________________________________________________________________
+                      00288 ;______________________________________________________________________________
+                      00289 ;
+                      00290 ;                                MAIN PROGRAM
+                      00291 ;______________________________________________________________________________
+                      00292 ;______________________________________________________________________________
+                      00293 
+007F                  00294 Main
+                      00295 
+                      00296   Init
+Error[113]  : Symbol not previously defined (GPIO)
+Error[126]  : Argument out of range (0 not between 5 and 9)
+Error[113]  : Symbol not previously defined (GPIO)
+                      00297 
+0087                  00298 Loop
+                      00299 
+                      00300   ; Look for any change
+                      00301   ;--------------------
+Error[113]  : Symbol not previously defined (GPIO)
+0087   0200           00302   movfw GPIO            ; Read switches
+0088   0E07           00303   andlw B'00000111'     ; mask 3 bits
+0089   0F07           00304   xorlw B'00000111'     ; Negate the stuff
+008A   0092           00305   subwf Switch_BackUp,w ; Compare to old value
+                      00306 
+                      00307   ; If we need a new frequency
+                      00308   ;---------------------------
+Error[113]  : Symbol not previously defined (STATUS)
+Error[113]  : Symbol not previously defined (Z)
+008B   0600           00309   btfsc STATUS,Z
+008C   0AAC           00310   goto  End_If
+                      00311 
+                      00312   ; Then
+                      00313 
+                      00314   ; Save switches state for next time
+                      00315   ;----------------------------------
+Error[113]  : Symbol not previously defined (GPIO)
+008D   0200           00316   movfw GPIO
+008E   0E07           00317   andlw B'00000111'
+008F   0F07           00318   xorlw B'00000111'
+0090   0032           00319   movwf Switch_BackUp
+                      00320 
+                      00321   ; Qrg_Pointer = Switch_BackUp x 6
+                      00322   ;----------------
+0091   01D2           00323   addwf Switch_BackUp,w
+0092   01D2           00324   addwf Switch_BackUp,w
+0093   01D2           00325   addwf Switch_BackUp,w
+0094   01D2           00326   addwf Switch_BackUp,w
+0095   01D2           00327   addwf Switch_BackUp,w
+0096   0033           00328   movwf Qrg_Pointer
+                      00329 
+                      00330   ; Download values to the Si570
+                      00331   ;-----------------------------
+0097   0935           00332   call  Freeze
+                      00333 
+0098   093E           00334   call  I2C_Start
+                      00335 
+                      00336   ; Send slave address + write bit
+                      00337   ;-------------------------------
+0099   0CAA           00338   movlw 0xAA
+009A   0950           00339   call  I2C_Tx
+                      00340 
+                      00341   ; Send register address
+                      00342   ;----------------------
+009B   0C07           00343   movlw 7
+009C   0950           00344   call  I2C_Tx
+                      00345 
+                      00346   ; Send register values
+                      00347   ;---------------------
+009D   0902           00348   call  GetFreq
+009E   0950           00349   call  I2C_Tx          ; -> reg 7
+                      00350 
+009F   0902           00351   call  GetFreq
+00A0   0950           00352   call  I2C_Tx          ; -> reg 8
+                      00353 
+00A1   0902           00354   call  GetFreq
+00A2   0950           00355   call  I2C_Tx          ; -> reg 9
+                      00356 
+00A3   0902           00357   call  GetFreq
+00A4   0950           00358   call  I2C_Tx          ; -> reg 10
+                      00359 
+00A5   0902           00360   call  GetFreq
+00A6   0950           00361   call  I2C_Tx          ; -> reg 11
+                      00362 
+00A7   0902           00363   call  GetFreq
+00A8   0950           00364   call  I2C_Tx          ; -> reg 12
+                      00365 
+00A9   0949           00366   call  I2C_Stop
+                      00367 
+                      00368   ; Unfreeze the DCO and assert the NewFreq bit
+                      00369   ;--------------------------------------------
+00AA   0976           00370   call  Unfreeze
+00AB   096D           00371   call  Newf
+                      00372 
+00AC                  00373 End_If
+                      00374 
+                      00375   ; Loop forever
+                      00376   ;-------------
+00AC   0A87           00377   goto  Loop
+                      00378 ;______________________________________________________________________________
+                      00379   end
+MPASM  5.06                           570.ASM   5-19-2011  15:45:21         PAGE  2
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+End_If                            000000AC
+Freeze                            00000035
+Freq1                             00000005
+Freq2                             0000000B
+Freq3                             00000011
+Freq4                             00000017
+Freq5                             0000001D
+Freq6                             00000023
+Freq7                             00000029
+Freq8                             0000002F
+GetFreq                           00000002
+I2C_Bit_Count                     00000011
+I2C_Buffer                        00000010
+I2C_Start                         0000003E
+I2C_Stop                          00000049
+I2C_Tx                            00000050
+Init                              
+Loop                              00000087
+Main                              0000007F
+Newf                              0000006D
+Qrg_Pointer                       00000013
+SCL                               GPIO,5
+SCL_High                          bsf SCL
+SCL_Low                           bcf SCL
+SDA                               GPIO,4
+SDA_High_Z                        
+SDA_Low                           
+START_OF_RAM                      00000010
+Switch_BackUp                     00000012
+Tx_Repeat                         00000053
+Tx_Until                          00000060
+Unfreeze                          00000076
+__12F509                          00000001
+
+
+MEMORY USAGE MAP ('X' = Used,  '-' = Unused)
+
+0000 : XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX
+0040 : XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX
+0080 : XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX XXXXXXXXXXXXX--- ----------------
+0FC0 : ---------------- ---------------- ---------------- ---------------X
+
+All other memory blocks unused.
+
+Program Memory Words Used:   173
+Program Memory Words Free:   851
+
+
+Errors   :    40
+Warnings :     0 reported,     0 suppressed
+Messages :     0 reported,     0 suppressed
+
+

@@ -1,0 +1,19 @@
+[Project]
+Filename=C:\Transponder_Eylul17.bas
+[Environment]
+CaretX=28
+CaretY=130
+[Version]
+Enable=1
+Rollover=255
+Major=0
+Minor=0
+Release=0
+Build=9
+[Results]
+Visible=1
+Height=117
+View=2
+[Status]
+Message=Success : 1254 program bytes used, 79 variable bytes used
+Image=0

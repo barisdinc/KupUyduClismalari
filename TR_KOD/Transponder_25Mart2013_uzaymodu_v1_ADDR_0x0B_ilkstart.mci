@@ -1,0 +1,19 @@
+[Project]
+Filename=Z:\Desktop\TR_KOD\Transponder_25Mart2013_uzaymodu_v1_ADDR_0x0B_ilkstart.bas
+[Environment]
+CaretX=1
+CaretY=559
+[Version]
+Enable=1
+Rollover=255
+Major=0
+Minor=0
+Release=0
+Build=65
+[Results]
+Visible=1
+Height=117
+View=2
+[Status]
+Message=Success : 1470 program bytes used, 82 variable bytes used
+Image=0

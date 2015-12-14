@@ -1,0 +1,44 @@
+#
+#	Device	Name	= MB15F72UL
+#
+DEVTYPE	2
+#
+#	CHANNEL	IF
+#
+#	MIN		MAX
+[
+R	3		16383
+N	3		2047
+A	0		15
+
+M-SW0	16
+M-SW1	8
+
+FC	1
+LDS	0
+
+T1	0
+T2	0
+
+]
+
+#
+#	CHANNEL	RF
+#	MIN		MAX
+#
+[
+
+R	3		16383
+N	3		2047
+A	0		127
+
+M-SW0	128
+M-SW1	64
+
+FC	1
+LDS	0
+
+T1	0
+T2	0
+
+]

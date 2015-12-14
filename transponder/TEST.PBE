@@ -1,0 +1,5 @@
+18F2550,482,20,20
+Reminder! Line [5]	In file [C:\PROJELER\TRANSPONDER\TEST.BAS]	*** Unrecognised DECLARE. Creating an assembler #DEFINE directive! ***
+Reminder! Line [6]	In file [C:\PROJELER\TRANSPONDER\TEST.BAS]	*** Unrecognised DECLARE. Creating an assembler #DEFINE directive! ***
+	PROGRAM COMPILED OK. 482 Bytes used from a possible 32768
+	20 Variables used in the 18F2550 from a possible 1024

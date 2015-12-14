@@ -1,0 +1,45 @@
+#
+#	Device	Name	= MB15F76UV
+#
+DEVTYPE	14
+#
+#	CHANNEL	IF
+#
+#	MIN		MAX
+[
+R	3		16383
+N	3		8191
+A	0		31
+
+M-SW0	8
+M-SW1	4
+
+FC	1
+LDS	0
+CS	0
+
+T1	0
+T2	0
+
+]
+
+#
+#	CHANNEL	RF
+#	MIN		MAX
+#
+[
+R	3		16383
+N	3		8191
+A	0		31
+
+M-SW0	32
+M-SW1	16
+
+FC	1
+LDS	0
+CS	0
+
+T1	0
+T2	0
+
+]

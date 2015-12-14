@@ -1,0 +1,672 @@
+ NOLIST
+;----------------------------------------------------------
+; Code Produced by the PROTON+ Compiler. Version 3.2.5.5
+; Copyright Rosetta Technologies/Crownhill Associates
+; Written by Les Johnson. February 2007
+;----------------------------------------------------------
+ LIST
+	LIST
+;{
+;FILE F1 = C:\PROJELER\TRANSPONDER\SI570+TEST.BAS
+;FILE F2 = C:\PROJELER\TRANSPONDER\SI570+TEST.PRP
+;}
+;[Variable Listing]
+;TEMP1,0036,DT_BYTE,1
+;TEMP2,0037,DT_BYTE,1
+;TEMPVAL,0038,DT_BYTE,1
+;SECS,0039,DT_BYTE,1
+;MINS,003A,DT_BYTE,1
+;HRS,003B,DT_BYTE,1
+;DAY,003C,DT_BYTE,1
+;DATE,003D,DT_BYTE,1
+;MONTH,003E,DT_BYTE,1
+;YEAR,003F,DT_BYTE,1
+;CTRL,0040,DT_BYTE,1
+;SECS_LAST,0041,DT_BYTE,1
+;[End Listing]
+ LIST  P = 16F876A,f = INHX8M ,w = 2, x = on, r = DEC, mm = ON, n = 0, c = 255
+ #include "C:\pic\proton\pds\INC\P16F876A.lpb"
+ #define __16F876A 1
+ #define XTAL 20
+ #define _CORE 14
+ #define _MAXRAM 368
+ #define _RAM_END 495
+ #define _MAXMEM 8192
+ #define _ADC 5
+ #define _ADC_RES 10
+ #define _EEPROM 128
+ #define _PAGES 3
+ #define _BANKS 3
+ #define RAM_BANKS 4
+ #define _USART 1
+ #define _USB 0
+ #define _FLASH 1
+ #define BANK0_START 32
+ #define BANK0_END 127
+ #define BANK1_START 160
+ #define BANK1_END 239
+ #define BANK2_START 272
+ #define BANK2_END 367
+ #define BANK3_START 400
+ #define BANK3_END 495
+ #define _SYSTEM_VARIABLE_COUNT 22
+ram_bank = 0
+current@page = 0
+dest@page = 0
+ #define LCD#DTPORT PORTB
+ #define LCD#DTPIN 4
+ #define LCD#RSPORT PORTB
+ #define LCD#RSPIN 2
+ #define LCD#ENPORT PORTB
+ #define LCD#ENPIN 3
+ #define LCD#INTERFACE 4
+ #define LCD#LINES 2
+ #define LCD#TYPE 0
+f@call macro dest
+	if (dest < 1)
+	if ((dest & 2048) == 0)
+	bcf 10,3
+	else
+	bsf 10,3
+	endif
+	if ((dest & 4096) == 0)
+	bcf 10,4
+	else
+	bsf 10,4
+	endif
+	else
+	if (dest > $)
+	if ((dest & 2048) == 0)
+	bcf 10,3
+	else
+	bsf 10,3
+	endif
+	if ((dest & 4096) == 0)
+	bcf 10,4
+	else
+	bsf 10,4
+	endif
+	else
+	if ((dest & 6144) == 0)
+	clrf 10
+	else
+	if ((dest & 2048) == 0)
+	bcf 10,3
+	else
+	bsf 10,3
+	endif
+	if ((dest & 4096) == 0)
+	bcf 10,4
+	else
+	bsf 10,4
+	endif
+	endif
+	endif
+	endif
+	call dest
+	endm
+f@jump macro dest
+	if (dest < 1)
+	if ((dest & 2048) == 0)
+	bcf 10,3
+	else
+	bsf 10,3
+	endif
+	if ((dest & 4096) == 0)
+	bcf 10,4
+	else
+	bsf 10,4
+	endif
+	else
+	if (dest > $)
+	if ((dest & 2048) == 0)
+	bcf 10,3
+	else
+	bsf 10,3
+	endif
+	if ((dest & 4096) == 0)
+	bcf 10,4
+	else
+	bsf 10,4
+	endif
+	else
+	if ((dest & 6144) == 0)
+	clrf 10
+	else
+	if ((dest & 2048) == 0)
+	bcf 10,3
+	else
+	bsf 10,3
+	endif
+	if ((dest & 4096) == 0)
+	bcf 10,4
+	else
+	bsf 10,4
+	endif
+	endif
+	endif
+	endif
+	goto dest
+	endm
+set@page macro dest
+	if ((dest & 2048) == 0)
+	bcf 10,3
+	else
+	bsf 10,3
+	endif
+	if ((dest & 4096) == 0)
+	bcf 10,4
+	else
+	bsf 10,4
+	endif
+	endm
+s@b	macro varin
+	if((varin & 384) == 0)
+	if(ram_bank == 1)
+	bcf 3,5
+	endif
+	if(ram_bank == 2)
+	bcf 3,6
+	endif
+	if(ram_bank == 3)
+	bcf 3,5
+	bcf 3,6
+	endif
+ram_bank = 0
+	endif
+	if((varin & 384) == 128)
+	if(ram_bank == 0)
+	bsf 3,5
+	endif
+	if(ram_bank == 2)
+	bsf 3,5
+	bcf 3,6
+	endif
+	if(ram_bank == 3)
+	bcf 3,6
+	endif
+ram_bank = 1
+	endif
+	if((varin & 384) == 256)
+	if(ram_bank == 0)
+	bsf 3,6
+	endif
+	if(ram_bank == 1)
+	bcf 3,5
+	bsf 3,6
+	endif
+	if(ram_bank == 3)
+	bcf 3,5
+	endif
+ram_bank = 2
+	endif
+	if((varin & 384) == 384)
+	if(ram_bank == 0)
+	bsf 3,5
+	bsf 3,6
+	endif
+	if(ram_bank == 1)
+	bsf 3,6
+	endif
+	if(ram_bank == 2)
+	bsf 3,5
+	endif
+ram_bank = 3
+	endif
+	endm
+r@b	macro
+	if((ram_bank & 1) != 0)
+	bcf 3,5
+	endif
+	if((ram_bank & 2) != 0)
+	bcf 3,6
+	endif
+ram_bank = 0
+	endm
+ #include "C:\pic\proton\pds\INC\REG_LD14.INC"
+BPF = 32
+BPFH = 33
+CSTR#CT = 34
+GEN = 35
+GEN4 = 36
+GEN4H = 37
+GPR = 38
+PBP#VAR0 = 39
+PBP#VAR0H = 40
+PP0 = 41
+PP0H = 42
+PP1 = 43
+PP1H = 44
+PP2 = 45
+PP2H = 46
+PP3 = 47
+PP3H = 48
+PP4 = 49
+PP5 = 50
+PP6H = 51
+PP7 = 52
+PP7H = 53
+	org 0
+	nop
+	movlw (Start@ >> 8) & 255
+	movwf 10
+	goto Start@
+	org 4
+lcd@cls movlw 128
+	movwf 33
+cls movlw 254
+	call ch@snd
+	movlw 1
+	call ch@snd
+	movlw 117
+	movwf 42
+	movlw 48
+	goto dlus@w
+lcd@crs clrf 33
+	bsf 33,7
+curs@ movwf 50
+	movlw 254
+	call ch@snd
+	movf 50,w
+	goto ch@snd
+out@decb
+	clrf 37
+out@decc
+	movwf 45
+	clrf 46
+out@dec
+	bcf 32,3
+	movf 37,w
+	skpnz
+	bsf 32,3
+	movlw 5
+	movwf 36
+	movlw 39
+	movwf 44
+	movlw 16
+	call d@dig
+	movlw 3
+	movwf 44
+	movlw 232
+	call d@dig
+	clrf 44
+	movlw 100
+	call d@dig
+	clrf 44
+	movlw 10
+	call d@dig
+	movf 45,w
+	goto send@it
+d@dig movwf 43
+	movf 46,w
+	movwf 42
+	movf 45,w
+	movwf 41
+	call d@vd
+	movf 41,w
+send@it movwf 41
+	decf 36,f
+	skpnz
+	bcf 32,3
+	movf 37,w
+	skpnz
+	goto $ + 4
+	subwf 36,w
+	skpnc
+	goto ex@send@it
+	movf 41,w
+	skpz
+	bcf 32,3
+	btfsc 32,3
+	goto ex@send@it
+	addlw '0'
+	goto ch@snd
+ex@send@it
+	return
+print movwf 48
+	bcf PORTB,3
+	bcf PORTB,2
+	bsf 3,5
+	bcf PORTB,3
+	bcf PORTB,2
+	movlw 15
+	andwf PORTB,f
+	bcf 3,5
+	movf 48,w
+	btfsc 32,1
+	goto prt@1
+	movlw 62
+	movwf 42
+	movlw 128
+	call dlus@w
+	movlw 51
+	movwf 47
+	call pr@lp
+	movlw 19
+	movwf 42
+	movlw 136
+	call dlus@w
+	call pr@lp
+	movlw 100
+	call dl@us
+	call pr@lp
+	movlw 100
+	call dl@us
+	movlw 34
+	movwf 47
+	call pr@lp
+	movlw 40
+	call prt@c
+	movlw 12
+	call prt@c
+	movlw 6
+	call prt@c
+	bsf 32,1
+	movf 48,w
+	goto prt@1
+prt@c bsf 32,0
+prt@1 movwf 47
+	btfss 32,0
+	goto prit@skp
+	bcf PORTB,2
+	sublw 3
+	skpc
+	goto prt@s
+	call prt@s
+	movlw 7
+	movwf 42
+	movlw 208
+	call dlus@w
+	bsf 3,0
+	return
+prit@skp
+	bsf 32,0
+	sublw 254
+	skpnz
+	goto pr@ex
+	bsf PORTB,2
+prt@s
+	btfss 32,0
+pr@lp bcf 32,0
+	bsf PORTB,3
+	movlw 15
+	andwf PORTB,f
+	movf 47,w
+	andlw 240
+	iorwf PORTB,f
+	nop
+	bcf PORTB,3
+	swapf 47,f
+	nop
+	btfsc 32,0
+	goto pr@lp
+	movlw 50
+	call dl@us
+pr@ex movf 48,w
+	goto i@nt
+SDA_PORT = PORTA
+SDA_PIN = 0
+SCL_PORT = PORTA
+SCL_PIN = 1
+busin2 bsf 32,4
+	btfss 32,4
+busin bcf 32,4
+	btfsc 32,5
+	goto $ + 5
+	bsf 32,5
+	call i2c@start
+	skpnc
+	goto bus@stp
+	bcf 32,2
+bus@ina movlw 8
+	movwf 44
+	call b@gb
+	rlf 43,f
+	decfsz 44,f
+	goto $ - 3
+	btfsc 32,2
+	goto $ + 8
+	btfsc 32,4
+	goto $ + 2
+bus@ack call b@dal
+	call b@ckh
+	call b@ckl
+	btfsc 32,4
+	call bus@stp
+	call b@dah
+	bcf 3,0
+	movf 43,w
+	goto i2c@fin
+busout2 bsf 32,4
+	btfss 32,4
+busout bcf 32,4
+	btfsc 32,6
+	goto $ + 6
+	andlw 254
+	movwf 38
+	bsf 32,6
+	bcf 3,0
+	goto i2c@fin
+	btfsc 32,7
+	goto $ + 7
+	movwf 47
+	bsf 32,7
+	call i2c@start
+	skpnc
+	goto bus@stp
+	movf 47,w
+	call b@wrtc
+	skpnc
+	goto bus@stp
+	btfss 32,4
+	goto i2c@fin
+bus@stp call b@dal
+	call b@ckh
+	bcf 32,6
+	bcf 32,7
+	bcf 32,5
+	bcf 32,2
+	call b@dah
+i2c@fin
+	bsf 49,0
+	skpc
+	bcf 49,0
+	goto i@nt
+i2c@start
+	call bus@strt
+	movf 38,w
+	btfsc 32,5
+	iorlw 1
+b@wrtc movwf 43
+	movlw 8
+	movwf 44
+	rlf 43,f
+	call b@dah
+	skpnc
+	goto $ + 2
+	call b@dal
+	call b@ckh
+	call b@ckl
+	decfsz 44,f
+	goto $ - 8
+	call b@dah
+b@gb call b@ckh
+	goto $ + 1
+	clrwdt
+	bcf 3,0
+	btfsc PORTA,0
+	bsf 3,0
+	call b@ckl
+	return
+bus@strt
+	call b@dah
+	call b@ckh
+	call b@dal
+b@ckl
+	bcf PORTA,1
+	bsf 3,5
+	bcf PORTA,1
+	goto b@rst
+b@ckh
+	bsf 3,5
+	bsf PORTA,1
+	goto b@rst
+b@dah
+	bsf 3,5
+	bsf PORTA,0
+	goto b@rst
+b@dal bcf PORTA,0
+	bsf 3,5
+	bcf PORTA,0
+b@slw
+b@rst bcf 3,5
+	return
+ch@snd
+	btfsc 33,7
+	goto print
+	btfss 33,1
+	goto  $ + 3
+	btfsc 33,0
+	goto busout
+	return
+c@strout
+	movwf 36
+c@stroutW
+	clrf 34
+c@stroutlp
+	movf 36,w
+	bsf 3,6
+	movwf 269
+	bcf 3,6
+	movf 37,w
+	bsf 3,6
+	movwf 271
+	call c@read
+	skpnz
+	goto i@nt
+	call ch@snd
+	incf 36,f
+	skpnz
+	incf 37,f
+	incfsz 34,f
+	goto c@stroutlp
+	goto i@nt
+c@read
+	bsf 3,5
+	bsf 3,6
+	bsf 396,EEPGD
+	bsf 396,RD
+	nop
+	nop
+	bcf 3,5
+	movf 268,w
+	goto i@nt
+dl@ms clrf 44
+dly@w movwf 43
+dly@p movlw 255
+	addwf 43,f
+	skpc
+	addwf 44,f
+	skpc
+	goto i@nt
+	movlw 3
+	movwf 42
+	movlw 231
+	call dlus@w
+	goto dly@p
+dl@us clrf 42
+dlus@w addlw 252
+	movwf 41
+	comf 42,f
+	skpc
+	goto $ + 7
+	movlw 255
+	nop
+	addwf 41,f
+	skpnc
+	goto $ - 3
+	addwf 41,f
+	nop
+	incfsz 42,f
+	goto $ - 8
+	return
+dig
+	addlw 1
+	movwf 48
+	movlw 10
+d@b
+	movwf 43
+	clrf 44
+	call d@vd
+	decfsz 48,f
+	goto $ - 2
+	movf 45,w
+	return
+d@vd clrf 46
+	clrf 45
+d@vd2 movlw 16
+	movwf 47
+	rlf 42,w
+	rlf 45,f
+	rlf 46,f
+	movf 43,w
+	subwf 45,f
+	movf 44,w
+	skpc
+	incfsz 44,w
+	subwf 46,f
+	skpnc
+	goto $ + 8
+	movf 43,w
+	addwf 45,f
+	movf 44,w
+	skpnc
+	incfsz 44,w
+	addwf 46,f
+	bcf 3,0
+	rlf 41,f
+	rlf 42,f
+	decfsz 47,f
+	goto $ - 21
+	movf 41,w
+	goto i@nt
+m@py
+	movlw 16
+	movwf 51
+	clrf 42
+	clrf 41
+	rrf 48,f
+	rrf 47,f
+	skpc
+	goto $ + 7
+	movf 43,w
+	addwf 41,f
+	movf 44,w
+	skpnc
+	incfsz 44,w
+	addwf 42,f
+	rrf 42,f
+	rrf 41,f
+	rrf 46,f
+	rrf 45,f
+	decfsz 51,f
+	goto $ - 15
+	movf 45,w
+	goto i@nt
+i@nt bcf 3,7
+i@nt2 bcf 3,5
+	bcf 3,6
+	nop
+	return
+__XTAL = 20
+__LCD_DTPIN = 4
+__LCD_RSPIN = 2
+__LCD_ENPIN = 3
+__LCD_INTERFACE = 4
+__LCD_LINES = 2
+__LCD_TYPE = 0
+__SDA_PIN = 0
+__SCL_PIN = 1
+Start@
+	clrf 32
+main@prog@start

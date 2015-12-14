@@ -1,0 +1,15 @@
+#
+#	Device	Name	= MB15C02
+#
+#
+DEVTYPE	8
+#	MIN		MAX
+
+[
+R	16		16383
+N	5		4095
+A	0		63
+
+M-SW0	64
+
+]

@@ -1,0 +1,360 @@
+ NOLIST
+;----------------------------------------------------------
+; Code Produced by the PROTON+ Compiler. Version 3.2.5.5
+; Copyright Rosetta Technologies/Crownhill Associates
+; Written by Les Johnson. February 2007
+;----------------------------------------------------------
+ LIST
+	LIST
+;{
+;FILE F1 = C:\PROJELER\TRANSPONDER\SI570.BAS
+;FILE F2 = C:\PROJELER\TRANSPONDER\SI570.PRP
+;}
+;[Variable Listing]
+;B21,0029,DT_BYTE,1
+;B22,002A,DT_BYTE,1
+;B23,002B,DT_BYTE,1
+;B24,002C,DT_BYTE,1
+;B25,002D,DT_BYTE,1
+;B26,002E,DT_BYTE,1
+;[End Listing]
+ LIST  P = 16F876A,f = INHX8M ,w = 2, x = on, r = DEC, mm = ON, n = 0, c = 255
+ #include "C:\pic\proton\pds\INC\P16F876A.lpb"
+ #define __16F876A 1
+ #define XTAL 20
+ #define _CORE 14
+ #define _MAXRAM 368
+ #define _RAM_END 495
+ #define _MAXMEM 8192
+ #define _ADC 5
+ #define _ADC_RES 10
+ #define _EEPROM 128
+ #define _PAGES 3
+ #define _BANKS 3
+ #define RAM_BANKS 4
+ #define _USART 1
+ #define _USB 0
+ #define _FLASH 1
+ #define BANK0_START 32
+ #define BANK0_END 127
+ #define BANK1_START 160
+ #define BANK1_END 239
+ #define BANK2_START 272
+ #define BANK2_END 367
+ #define BANK3_START 400
+ #define BANK3_END 495
+ #define _SYSTEM_VARIABLE_COUNT 9
+ram_bank = 0
+current@page = 0
+dest@page = 0
+ #define LCD#TYPE 0
+f@call macro dest
+	if (dest < 1)
+	if ((dest & 2048) == 0)
+	bcf 10,3
+	else
+	bsf 10,3
+	endif
+	if ((dest & 4096) == 0)
+	bcf 10,4
+	else
+	bsf 10,4
+	endif
+	else
+	if (dest > $)
+	if ((dest & 2048) == 0)
+	bcf 10,3
+	else
+	bsf 10,3
+	endif
+	if ((dest & 4096) == 0)
+	bcf 10,4
+	else
+	bsf 10,4
+	endif
+	else
+	if ((dest & 6144) == 0)
+	clrf 10
+	else
+	if ((dest & 2048) == 0)
+	bcf 10,3
+	else
+	bsf 10,3
+	endif
+	if ((dest & 4096) == 0)
+	bcf 10,4
+	else
+	bsf 10,4
+	endif
+	endif
+	endif
+	endif
+	call dest
+	endm
+f@jump macro dest
+	if (dest < 1)
+	if ((dest & 2048) == 0)
+	bcf 10,3
+	else
+	bsf 10,3
+	endif
+	if ((dest & 4096) == 0)
+	bcf 10,4
+	else
+	bsf 10,4
+	endif
+	else
+	if (dest > $)
+	if ((dest & 2048) == 0)
+	bcf 10,3
+	else
+	bsf 10,3
+	endif
+	if ((dest & 4096) == 0)
+	bcf 10,4
+	else
+	bsf 10,4
+	endif
+	else
+	if ((dest & 6144) == 0)
+	clrf 10
+	else
+	if ((dest & 2048) == 0)
+	bcf 10,3
+	else
+	bsf 10,3
+	endif
+	if ((dest & 4096) == 0)
+	bcf 10,4
+	else
+	bsf 10,4
+	endif
+	endif
+	endif
+	endif
+	goto dest
+	endm
+set@page macro dest
+	if ((dest & 2048) == 0)
+	bcf 10,3
+	else
+	bsf 10,3
+	endif
+	if ((dest & 4096) == 0)
+	bcf 10,4
+	else
+	bsf 10,4
+	endif
+	endm
+s@b	macro varin
+	if((varin & 384) == 0)
+	if(ram_bank == 1)
+	bcf 3,5
+	endif
+	if(ram_bank == 2)
+	bcf 3,6
+	endif
+	if(ram_bank == 3)
+	bcf 3,5
+	bcf 3,6
+	endif
+ram_bank = 0
+	endif
+	if((varin & 384) == 128)
+	if(ram_bank == 0)
+	bsf 3,5
+	endif
+	if(ram_bank == 2)
+	bsf 3,5
+	bcf 3,6
+	endif
+	if(ram_bank == 3)
+	bcf 3,6
+	endif
+ram_bank = 1
+	endif
+	if((varin & 384) == 256)
+	if(ram_bank == 0)
+	bsf 3,6
+	endif
+	if(ram_bank == 1)
+	bcf 3,5
+	bsf 3,6
+	endif
+	if(ram_bank == 3)
+	bcf 3,5
+	endif
+ram_bank = 2
+	endif
+	if((varin & 384) == 384)
+	if(ram_bank == 0)
+	bsf 3,5
+	bsf 3,6
+	endif
+	if(ram_bank == 1)
+	bsf 3,6
+	endif
+	if(ram_bank == 2)
+	bsf 3,5
+	endif
+ram_bank = 3
+	endif
+	endm
+r@b	macro
+	if((ram_bank & 1) != 0)
+	bcf 3,5
+	endif
+	if((ram_bank & 2) != 0)
+	bcf 3,6
+	endif
+ram_bank = 0
+	endm
+ #include "C:\pic\proton\pds\INC\REG_LD14.INC"
+BPF = 32
+BPFH = 33
+GPR = 34
+PP0 = 35
+PP0H = 36
+PP1 = 37
+PP1H = 38
+PP3 = 39
+PP4 = 40
+	org 0
+	nop
+	movlw (Start@ >> 8) & 255
+	movwf 10
+	goto Start@
+	org 4
+busoutb
+	bsf 32,5
+	bsf 32,6
+	bsf 32,7
+	goto busout
+SDA_PORT = PORTC
+SDA_PIN = 3
+SCL_PORT = PORTC
+SCL_PIN = 4
+busout2 bsf 32,4
+	btfss 32,4
+busout bcf 32,4
+	btfsc 32,6
+	goto $ + 6
+	andlw 254
+	movwf 34
+	bsf 32,6
+	bcf 3,0
+	goto i2c@fin
+	btfsc 32,7
+	goto $ + 7
+	movwf 39
+	bsf 32,7
+	call i2c@start
+	skpnc
+	goto bus@stp
+	movf 39,w
+	call b@wrtc
+	skpnc
+	goto bus@stp
+	btfss 32,4
+	goto i2c@fin
+bus@stp call b@dal
+	call b@ckh
+	bcf 32,6
+	bcf 32,7
+	bcf 32,5
+	bcf 32,2
+	call b@dah
+i2c@fin
+	bsf 40,0
+	skpc
+	bcf 40,0
+	goto i@nt
+i2c@start
+	call bus@strt
+	movf 34,w
+	btfsc 32,5
+	iorlw 1
+b@wrtc movwf 37
+	movlw 8
+	movwf 38
+	rlf 37,f
+	call b@dah
+	skpnc
+	goto $ + 2
+	call b@dal
+	call b@ckh
+	call b@ckl
+	decfsz 38,f
+	goto $ - 8
+	call b@dah
+b@gb call b@ckh
+	goto $ + 1
+	clrwdt
+	bcf 3,0
+	btfsc PORTC,3
+	bsf 3,0
+	call b@ckl
+	return
+bus@strt
+	call b@dah
+	call b@ckh
+	call b@dal
+b@ckl
+	bcf PORTC,4
+	bsf 3,5
+	bcf PORTC,4
+	goto b@rst
+b@ckh
+	bsf 3,5
+	bsf PORTC,4
+	goto b@rst
+b@dah
+	bsf 3,5
+	bsf PORTC,3
+	goto b@rst
+b@dal bcf PORTC,3
+	bsf 3,5
+	bcf PORTC,3
+b@slw
+b@rst bcf 3,5
+	return
+dl@ms clrf 38
+dly@w movwf 37
+dly@p movlw 255
+	addwf 37,f
+	skpc
+	addwf 38,f
+	skpc
+	goto i@nt
+	movlw 3
+	movwf 36
+	movlw 231
+	call dlus@w
+	goto dly@p
+dl@us clrf 36
+dlus@w addlw 252
+	movwf 35
+	comf 36,f
+	skpc
+	goto $ + 7
+	movlw 255
+	nop
+	addwf 35,f
+	skpnc
+	goto $ - 3
+	addwf 35,f
+	nop
+	incfsz 36,f
+	goto $ - 8
+	return
+i@nt bcf 3,7
+i@nt2 bcf 3,5
+	bcf 3,6
+	nop
+	return
+__XTAL = 20
+__SDA_PIN = 3
+__SCL_PIN = 4
+Start@
+	clrf 32
+main@prog@start

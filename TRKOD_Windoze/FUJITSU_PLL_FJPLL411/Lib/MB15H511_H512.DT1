@@ -1,0 +1,49 @@
+#
+#	Device	Name	= MB15H511
+#
+DEVTYPE	16
+#
+#	CHANNEL	IF
+#	MIN	MAX
+[
+R	3	16383
+N	3	2047
+A	0	127
+
+M-SW0	16
+M-SW1	8
+
+CS		1
+LDS		1
+T1		0
+T2		0
+FC		1
+PS		1
+
+]
+
+#
+#	CHANNEL	RF
+#	MIN	MAX
+[
+
+R	1	2
+N	4	127
+A	0	15
+F	0	1048575
+
+M-SW0	16
+
+DEVICE	0
+GPS		0
+CDMA	0
+APLRF	1
+PS		0
+PSVCO	0
+CHRF	1
+CPRF	16
+ISET	25
+TMC		0
+TM		0
+
+]

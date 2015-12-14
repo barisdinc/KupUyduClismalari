@@ -1,0 +1,361 @@
+DEFINE OSC 4           
+
+config_start
+
+config_end 
+ 
+SDA VAR PORTC.7         
+SCL VAR PORTC.5         
+
+SDA2 VAR PORTC.4         
+SCL2 VAR PORTC.3         
+
+
+i2c_read CON 1          
+i2c_write CON 0         
+i2c_out VAR BYTE        
+i2c_in  VAR BYTE[2]     
+i2c_ack VAR BIT         
+temp VAR WORD
+DEFINE I2C_SLOW 1
+DEFINE I2C_SCLOUT 1
+
+DONGU VAR BYTE
+
+TRISB = 0
+PORTB.7 = 1
+
+
+ 
+Start:          
+
+    for DONGU = 1 to 3
+        GOSUB I2C_START
+        i2c_out = $AA       
+        GOSUB I2C_TX
+        i2c_out = 137       
+        GOSUB I2C_TX
+        i2c_out = $10
+        GOSUB I2C_TX
+        GOSUB I2C_STOP
+        pause 10
+    
+'        '231.850 Mhz VCO-1
+'        GOSUB I2C_START
+'        i2c_out = $AA       
+'        GOSUB I2C_TX
+'        i2c_out = 7       
+'        GOSUB I2C_TX
+'        i2c_out = $E0                               
+'        GOSUB I2C_TX
+'        i2c_out = $42
+'        GOSUB I2C_TX
+'        i2c_out = $C9
+'        GOSUB I2C_TX
+'        i2c_out = $F2
+'        GOSUB I2C_TX
+'        i2c_out = $CE
+'        GOSUB I2C_TX
+'        i2c_out = $6A      
+'        GOSUB I2C_TX
+'        GOSUB I2C_STOP
+'        pause 10
+
+'        '232.700 Mhz VCO-1     olculen 232.860        '145.935 giris icin
+'        GOSUB I2C_START
+'        i2c_out = $AA       
+'        GOSUB I2C_TX
+'        i2c_out = 7       
+'        GOSUB I2C_TX
+'        i2c_out = $E0                               
+'        GOSUB I2C_TX
+'        i2c_out = $42
+'        GOSUB I2C_TX
+'        i2c_out = $CC
+'        GOSUB I2C_TX
+'        i2c_out = $B8
+'        GOSUB I2C_TX
+'        i2c_out = $71
+'        GOSUB I2C_TX
+'        i2c_out = $58      
+'        GOSUB I2C_TX
+'        GOSUB I2C_STOP
+'        pause 10
+                
+        '232.700 Mhz VCO-1  
+        GOSUB I2C_START
+        i2c_out = $AA       
+        GOSUB I2C_TX
+        i2c_out = 7       
+        GOSUB I2C_TX
+        i2c_out = $E0                               
+        GOSUB I2C_TX
+        i2c_out = $42
+        GOSUB I2C_TX
+        i2c_out = $CB
+        GOSUB I2C_TX
+        i2c_out = $EB
+        GOSUB I2C_TX
+        i2c_out = $6F
+        GOSUB I2C_TX
+        i2c_out = $C9      
+        GOSUB I2C_TX
+        GOSUB I2C_STOP
+        pause 10
+        
+        GOSUB I2C_START
+        i2c_out = $AA   
+        GOSUB I2C_TX
+        i2c_out = 137   
+        GOSUB I2C_TX
+        i2c_out = 0
+        GOSUB I2C_TX
+        GOSUB I2C_STOP
+        pause 10
+        
+        GOSUB I2C_START
+        i2c_out = $AA   
+        GOSUB I2C_TX
+        i2c_out = 135   
+        GOSUB I2C_TX
+        i2c_out = $40
+        GOSUB I2C_TX
+        GOSUB I2C_STOP
+        pause 10
+    
+        pause 1000
+        toggle portb.7        
+    
+    '    goto start
+    next DONGU 
+
+
+
+    for DONGU = 1 to 3
+        GOSUB I2C_START2
+        i2c_out = $AA       
+        GOSUB I2C_TX2
+        i2c_out = 137       
+        GOSUB I2C_TX2
+        i2c_out = $10
+        GOSUB I2C_TX2
+        GOSUB I2C_STOP2
+        pause 10
+
+        '348.150Mhz VCO-1
+        GOSUB I2C_START2
+        i2c_out = $AA       
+        GOSUB I2C_TX2
+        i2c_out = 7       
+        GOSUB I2C_TX2
+        i2c_out = $60                               
+        GOSUB I2C_TX2
+        i2c_out = $42
+        GOSUB I2C_TX2
+        i2c_out = $AA
+        GOSUB I2C_TX2
+        i2c_out = $60
+        GOSUB I2C_TX2
+        i2c_out = $D5
+        GOSUB I2C_TX2
+        i2c_out = $F7      
+        GOSUB I2C_TX2
+        GOSUB I2C_STOP2
+        pause 10
+
+'        '231.850 Mhz VCO-1
+'        GOSUB I2C_START2
+'        i2c_out = $AA       
+'        GOSUB I2C_TX2
+'        i2c_out = 7       
+'        GOSUB I2C_TX2
+'        i2c_out = $E0                               
+'        GOSUB I2C_TX2
+'        i2c_out = $42
+'        GOSUB I2C_TX2
+'        i2c_out = $C9
+'        GOSUB I2C_TX2
+'        i2c_out = $F2
+'        GOSUB I2C_TX2
+'        i2c_out = $CE
+'        GOSUB I2C_TX2
+'        i2c_out = $6A      
+'        GOSUB I2C_TX2
+'        GOSUB I2C_STOP2
+'        pause 10
+          
+'        '320.000Mhz VCO-1
+'        GOSUB I2C_START2
+'        i2c_out = $AA       
+'        GOSUB I2C_TX2
+'        i2c_out = 7       
+'        GOSUB I2C_TX2
+'        i2c_out = $00                               
+'        GOSUB I2C_TX2
+'        i2c_out = $C2
+'        GOSUB I2C_TX2
+'        i2c_out = $CC
+'        GOSUB I2C_TX2
+'        i2c_out = $CD
+'        GOSUB I2C_TX2
+'        i2c_out = $F2
+'        GOSUB I2C_TX2
+'        i2c_out = $67      
+'        GOSUB I2C_TX2
+'        GOSUB I2C_STOP2
+'        pause 10
+
+        
+        GOSUB I2C_START2
+        i2c_out = $AA   
+        GOSUB I2C_TX2
+        i2c_out = 137   
+        GOSUB I2C_TX2
+        i2c_out = 0
+        GOSUB I2C_TX2
+        GOSUB I2C_STOP2
+        pause 10
+        
+        GOSUB I2C_START2
+        i2c_out = $AA   
+        GOSUB I2C_TX2
+        i2c_out = 135   
+        GOSUB I2C_TX2
+        i2c_out = $40
+        GOSUB I2C_TX2
+        GOSUB I2C_STOP2
+        pause 10
+    
+        pause 1000
+        toggle portb.7        
+    
+    '    goto start
+    next DONGU 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+GOTO BITIS
+ 
+I2C_START:              'I2C start (start communication on I2C bus)
+    HIGH SDA
+    HIGH SCL
+    LOW SDA
+    LOW SCL
+    RETURN
+ 
+I2C_STOP:               'I2C stop (terminate communication on I2C bus)
+    LOW SDA
+    HIGH SCL
+    HIGH SDA
+    PAUSE 1
+    RETURN
+ 
+I2C_RX:                           'I2C receive -> receive data from slave
+    SHIFTIN SDA,SCL,0,[i2c_in[0]] 'Shift in first byte MSBpre
+    SHIFTOUT SDA,SCL,1,[%0\1]     'Send acknowledge (ACK) = 0
+    SHIFTIN SDA,SCL,0,[i2c_in[1]] 'Shift in second byte MSBpre
+    SHIFTOUT SDA,SCL,1,[%1\1]     'Send not acknowledge (NACK) = 1
+    RETURN
+ 
+I2C_TX:                           'I2C transmit -> send data to the slave
+    SHIFTOUT SDA,SCL,1,[i2c_out]  'Shift out “i2c_out” MSBfirst
+    SHIFTIN SDA,SCL,0,[i2c_ack\1] 'Receive ACK bit          
+    RETURN
+
+
+
+I2C_START2:
+    HIGH SDA2
+    HIGH SCL2
+    LOW SDA2
+    LOW SCL2
+    RETURN
+ 
+I2C_STOP2:
+    LOW SDA2
+    HIGH SCL2
+    HIGH SDA2
+    PAUSE 1
+    RETURN
+ 
+I2C_RX2:                           
+    SHIFTIN SDA2,SCL2,0,[i2c_in[0]]
+    SHIFTOUT SDA2,SCL2,1,[%0\1]    
+    SHIFTIN SDA2,SCL2,0,[i2c_in[1]]
+    SHIFTOUT SDA2,SCL2,1,[%1\1]  
+    RETURN
+ 
+I2C_TX2:                           
+    SHIFTOUT SDA2,SCL2,1,[i2c_out]  
+    SHIFTIN SDA2,SCL2,0,[i2c_ack\1] 
+    RETURN
+
+
+
+
+
+
+
+
+
+BITIS:
+    END
+    
+    
+    
+    '    GOSUB I2C_START
+    '    i2c_out = $AA       
+    '    GOSUB I2C_TX
+    '    i2c_out = 7       
+    '    GOSUB I2C_TX
+    '    i2c_out = $E1                               
+    '    GOSUB I2C_TX
+    '    i2c_out = $C2
+    '    GOSUB I2C_TX
+    '    i2c_out = $B5
+    '    GOSUB I2C_TX
+    '    i2c_out = $DD
+    '    GOSUB I2C_TX
+    '    i2c_out = $40
+    '    GOSUB I2C_TX
+    '    i2c_out = $F8      
+    '    GOSUB I2C_TX
+    '    GOSUB I2C_STOP
+    '    pause 10
+    
+    
+    
+'        GOSUB I2C_START
+'        i2c_out = $AA       
+'        GOSUB I2C_TX
+'        i2c_out = 7       
+'        GOSUB I2C_TX
+'        i2c_out = $E0                               
+'        GOSUB I2C_TX
+'        i2c_out = $42
+'        GOSUB I2C_TX
+'        i2c_out = $C9
+'        GOSUB I2C_TX
+'        i2c_out = $F2
+'        GOSUB I2C_TX
+'        i2c_out = $CE
+'        GOSUB I2C_TX
+'        i2c_out = $6A      
+'        GOSUB I2C_TX
+'        GOSUB I2C_STOP
+'        pause 10
+    
+    '28.010 Mhz
+    

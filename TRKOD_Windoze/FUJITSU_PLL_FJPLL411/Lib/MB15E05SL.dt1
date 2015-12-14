@@ -1,0 +1,20 @@
+#
+#	Device	Name	= MB15E05SL
+#
+#
+DEVTYPE	12
+#	MIN		MAX
+
+[
+R	3		16383
+N	3		2047
+A	0		127
+
+M-SW0	128
+M-SW1	64
+
+FC	1
+LDS	0
+CS	0
+
+]

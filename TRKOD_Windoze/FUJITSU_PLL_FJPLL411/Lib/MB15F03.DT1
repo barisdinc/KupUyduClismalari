@@ -1,0 +1,44 @@
+#
+#	Device	Name	= MB15F03
+#
+DEVTYPE	2
+#
+#	CHANNEL	IF
+#
+#	MIN		MAX
+[
+R	5		16383
+N	5		2047
+A	0		31
+
+M-SW0	32
+M-SW1	16
+
+FC	1
+LDS	0
+
+T1	0
+T2	0
+
+]
+
+#
+#	CHANNEL	RF
+#	MIN		MAX
+#
+[
+
+R	5		16383
+N	5		2047
+A	0		127
+
+M-SW0	128
+M-SW1	64
+
+FC	1
+LDS	0
+
+T1	0
+T2	0
+
+]

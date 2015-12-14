@@ -1,0 +1,23 @@
+Error[151]   C:\BEELINE\MACROS.INC 302 : Operand contains unresolvable labels or is too complex
+Error[151]   C:\BEELINE\MACROS.INC 310 : Operand contains unresolvable labels or is too complex
+Error[151]   C:\BEELINE\MACROS.INC 302 : Operand contains unresolvable labels or is too complex
+Error[151]   C:\BEELINE\MACROS.INC 310 : Operand contains unresolvable labels or is too complex
+Error[151]   C:\BEELINE\MACROS.INC 302 : Operand contains unresolvable labels or is too complex
+Message[305] C:\BEELINE\BEELINE105.ASM 892 : Using default destination of 1 (file).
+Message[305] C:\BEELINE\BEELINE105.ASM 913 : Using default destination of 1 (file).
+Message[305] C:\BEELINE\BEELINE105.ASM 1113 : Using default destination of 1 (file).
+Message[305] C:\BEELINE\BEELINE105.ASM 1134 : Using default destination of 1 (file).
+Error[151]   C:\BEELINE\MACROS.INC 302 : Operand contains unresolvable labels or is too complex
+Error[151]   C:\BEELINE\MACROS.INC 310 : Operand contains unresolvable labels or is too complex
+Message[305] C:\BEELINE\BEELINE105.ASM 1734 : Using default destination of 1 (file).
+Message[305] C:\BEELINE\BEELINE105.ASM 1739 : Using default destination of 1 (file).
+Message[305] C:\BEELINE\BEELINE105.ASM 1741 : Using default destination of 1 (file).
+Message[305] C:\BEELINE\BEELINE105.ASM 1742 : Using default destination of 1 (file).
+Message[305] C:\BEELINE\BEELINE105.ASM 1744 : Using default destination of 1 (file).
+Warning[209] C:\BEELINE\BEELINE105.ASM 1788 : Missing quote
+Message[305] C:\BEELINE\BEELINE105.ASM 1843 : Using default destination of 1 (file).
+Message[305] C:\BEELINE\BEELINE105.ASM 1845 : Using default destination of 1 (file).
+Message[305] C:\BEELINE\BEELINE105.ASM 1847 : Using default destination of 1 (file).
+Warning[205] C:\BEELINE\BEELINE105.ASM 1873 : Found directive in column 1. (RADIX)
+Error[128]   C:\BEELINE\SERUTIL.ASM 207 : Missing argument(s)
+Error[128]   C:\BEELINE\SERUTIL.ASM 212 : Missing argument(s)

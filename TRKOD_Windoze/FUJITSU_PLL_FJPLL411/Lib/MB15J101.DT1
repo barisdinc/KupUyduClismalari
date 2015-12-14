@@ -1,0 +1,24 @@
+#
+#	Device	Name	= MB15J101
+#
+DEVTYPE	15
+#
+#	CHANNEL	RF
+#
+#	MIN		MAX
+[
+R	3		16383
+N	3		2047
+A	0		127
+
+M-SW0	128
+M-SW1	64
+
+LDS	0
+FC	1
+T	0
+CS	0
+LO	1
+PSA	1
+
+]

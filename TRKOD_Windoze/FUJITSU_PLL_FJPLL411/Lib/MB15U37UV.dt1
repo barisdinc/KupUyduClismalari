@@ -1,0 +1,47 @@
+#
+#	Device	Name	= MB15U37UV
+#
+DEVTYPE	10
+#
+#	CHANNEL	IF
+#
+#	MIN		MAX
+#
+[
+R	3		32767
+N	3		8191
+A	0		31
+
+M-SW0	8
+M-SW1	16
+
+PS	1
+FC	1
+CMC	0
+ZC	0
+LDS	0
+FDS	0
+
+]
+
+#
+#	CHANNEL	RF
+#
+#	MIN		MAX
+#
+[
+R	3		32767
+N	3		8191
+A	0		31
+
+M-SW0	16
+M-SW1	32
+
+PS	1
+FC	1
+CMC	0
+ZC	0
+LDS	0
+FDS	0
+
+]

@@ -1,0 +1,19 @@
+#
+#	Device	Name	= MB1504
+#
+#
+DEVTYPE	1
+#	MIN		MAX
+
+[
+R	5		16383
+N	5		2047
+A	0		63
+
+M-SW0	64
+M-SW1	32
+
+FC	1
+LDS	0
+
+]

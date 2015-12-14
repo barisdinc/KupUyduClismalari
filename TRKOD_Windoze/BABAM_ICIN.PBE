@@ -1,0 +1,7 @@
+16F876A,5000,144,20
+Reminder! Line [292]	In file [C:\DOCUMENTS AND SETTINGS\METALMAN\DESKTOP\BABAM_ICIN.BAS]	*** Make sure BYTE array or STRING LCD_V1 is large enough to accomodate the DECIMAL conversion! ***
+Reminder! Line [312]	In file [C:\DOCUMENTS AND SETTINGS\METALMAN\DESKTOP\BABAM_ICIN.BAS]	*** Make sure BYTE array or STRING LCD_A1 is large enough to accomodate the DECIMAL conversion! ***
+Reminder! Line [346]	In file [C:\DOCUMENTS AND SETTINGS\METALMAN\DESKTOP\BABAM_ICIN.BAS]	*** Make sure BYTE array or STRING LCD_V1 is large enough to accomodate the DECIMAL conversion! ***
+Reminder! Line [364]	In file [C:\DOCUMENTS AND SETTINGS\METALMAN\DESKTOP\BABAM_ICIN.BAS]	*** Make sure BYTE array or STRING LCD_A1 is large enough to accomodate the DECIMAL conversion! ***
+	PROGRAM COMPILED OK. 5000 Words used from a possible 8192
+	144 Variables used in the 16F876A from a possible 368
